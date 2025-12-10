@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITZ "GRAND" | guns.lol</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(20, 20, 30, 0.9);
+            border-radius: 15px;
+            border: 1px solid #2a2a3e;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #8b0000 0%, #450000 100%);
+            padding: 25px;
+            text-align: center;
+            border-bottom: 2px solid #5a0000;
+        }
+        
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #cccccc;
+            font-weight: 300;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .description {
+            line-height: 1.6;
+            color: #b0b0c0;
+            font-size: 1.05rem;
+            padding: 15px;
+            background: rgba(30, 30, 45, 0.7);
+            border-radius: 8px;
+            border-left: 4px solid #8b0000;
+        }
+        
+        .clan-box {
+            background: rgba(10, 10, 20, 0.9);
+            border: 1px solid #333344;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+        
+        .box-title {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #ffaa00;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        
+        .clan-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #333344;
+        }
+        
+        .clan-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .clan-key {
+            color: #a0a0c0;
+        }
+        
+        .clan-value {
+            color: #ffffff;
+            font-weight: bold;
+        }
+        
+        .deputy-arrow {
+            color: #00aa00;
+            margin-left: 8px;
+        }
+        
+        .leader-star {
+            color: #ffaa00;
+            margin-left: 8px;
+        }
+        
+        .clan-arrow {
+            color: #ff4444;
+            margin-left: 8px;
+        }
+        
+        .friends {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .friends i {
+            color: #7289da;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+        
+        .friends-text {
+            color: #b0b0c0;
+        }
+        
+        .friends-link {
+            color: #7289da;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .friends-link:hover {
+            text-decoration: underline;
+        }
+        
+        .offer {
+            background: rgba(0, 40, 0, 0.3);
+            border: 1px solid #006600;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .offer-title {
+            color: #00cc00;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .offer-text {
+            color: #a0d0a0;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            color: #ffff00;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666677;
+            font-size: 0.9rem;
+            border-top: 1px solid #2a2a3e;
+            background: rgba(15, 15, 25, 0.9);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">ITZ "GRAND"</h1>
+            <p class="subtitle">guns.lol профиль</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="description">
+                    Гранд - Майнкрафт - кс2 player, так-же технический администратор.
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="clan-box">
+                    <div class="box-title">Информация о клане</div>
+                    
+                    <div class="clan-item">
+                        <span class="clan-key">Clan ➨</span>
+                        <span class="clan-value">
+                            SNY
+                            <i class="fas fa-arrow-down clan-arrow"></i>
+                        </span>
+                    </div>
+                    
+                    <div class="clan-item">
+                        <span class="clan-key">Leader ➨</span>
+                        <span class="clan-value">
+                            Dark
+                            <i class="fas fa-star leader-star"></i>
+                        </span>
+                    </div>
+                    
+                    <div class="clan-item">
+                        <span class="clan-key">Deputy ➨</span>
+                        <span class="clan-value">
+                            Grand
+                            <i class="fas fa-arrow-up deputy-arrow"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="friends">
+                <i class="fab fa-discord"></i>
+                <div class="friends-text">
+                    Best friend: <a href="#" class="friends-link">@darkerd1</a>
+                </div>
+            </div>
+            
+            <div class="offer">
+                <div class="offer-title">Готов к сотрудничеству</div>
+                <div class="offer-text">
+                    Встану на проект с зп от <span class="highlight">500р</span> в месяц.
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Стиль guns.lol | Создано специально для Grand</p>
+        </div>
+    </div>
+</body>
+</html>
