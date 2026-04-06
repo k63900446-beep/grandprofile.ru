@@ -2,8 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>YouTube Analytics — DIDik (пранк)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Studio — DID</title>
+    <!-- Font Awesome 6 (бесплатно) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,388 +14,346 @@
         }
 
         body {
-            background: #0f0f0f;  /* Тёмный фон YouTube */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            padding: 20px;
-        }
-
-        /* Карточка аналитики — один в один как скриншот */
-        .analytics-card {
-            max-width: 900px;
-            width: 100%;
-            background: #1e1e1e;  /* Цвет фона YouTube Studio */
-            border-radius: 28px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            padding: 24px 28px 32px 28px;
-            transition: all 0.2s;
-            border: 1px solid #2a2a2a;
-        }
-
-        /* Заголовок главный */
-        .channel-title {
-            font-size: 24px;
-            font-weight: 500;
-            color: #f1f1f1;
-            margin-bottom: 20px;
-            letter-spacing: -0.3px;
-        }
-        .channel-title span {
-            color: #aaa;
-            font-weight: 400;
-        }
-
-        /* Навигационные вкладки (Обзор / Контент / Аудитория / Тренды) */
-        .tabs {
-            display: flex;
-            gap: 28px;
-            border-bottom: 1px solid #3a3a3a;
-            padding-bottom: 12px;
-            margin-bottom: 28px;
-        }
-        .tab {
-            font-size: 15px;
-            font-weight: 500;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0f0f0f;
             color: #e5e5e5;
-            cursor: default;
-            padding-bottom: 8px;
-            border-bottom: 2px solid transparent;
-        }
-        .tab.active {
-            color: #3ea6ff;
-            border-bottom: 2px solid #3ea6ff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* Блок с результатом за 28 дней (раньше "никто не смотрел") */
-        .result-banner {
-            background: #2c2c2c;
-            border-left: 6px solid #3ea6ff;
-            border-radius: 12px;
-            padding: 18px 20px;
+        /* ----- Sidebar (YouTube Studio style) ----- */
+        .sidebar {
+            width: 260px;
+            background: #0f0f0f;
+            border-right: 1px solid #2c2c2c;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 12px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
             margin-bottom: 28px;
+            padding-left: 12px;
+            letter-spacing: -0.5px;
         }
-        .result-title {
-            font-size: 18px;
+        .logo i {
+            color: #ff0000;
+            margin-right: 8px;
+        }
+        .logo span {
+            background: linear-gradient(135deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 12px;
+            margin: 2px 0;
+            border-radius: 12px;
             font-weight: 500;
-            color: #f1f1f1;
+            font-size: 15px;
+            color: #e5e5e5;
+            transition: 0.2s;
+            cursor: default;
         }
-        .result-title strong {
-            color: #3ea6ff;
+        .nav-item i {
+            width: 24px;
+            font-size: 20px;
+        }
+        .nav-item.active {
+            background: #2c2c2c;
+            color: white;
+        }
+        .nav-item:not(.active):hover {
+            background: #1f1f1f;
+        }
+
+        /* ----- Main content ----- */
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 32px;
+        }
+
+        /* Header */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .channel-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #1f1f1f;
+            padding: 6px 16px 6px 12px;
+            border-radius: 40px;
+        }
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(145deg, #3b82f6, #9333ea);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .channel-info h3 {
+            font-size: 16px;
             font-weight: 600;
         }
-        .green-check {
-            color: #3ea6ff;
-            margin-left: 8px;
-            font-size: 18px;
-        }
-
-        /* Таблица статистики */
-        .stats-table {
-            background: #252525;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 28px;
-            border: 1px solid #333;
-        }
-        .stats-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            text-align: center;
-        }
-        .stats-header {
-            background: #2d2d2d;
-            padding: 14px 0;
-            font-size: 14px;
-            font-weight: 500;
-            color: #ccc;
-            border-bottom: 1px solid #3a3a3a;
-            letter-spacing: 0.3px;
-        }
-        .stats-value {
-            padding: 18px 0;
-            font-size: 28px;
-            font-weight: 500;
-            color: #f1f1f1;
-            background: #202020;
-        }
-        .stats-sub {
+        .channel-info p {
             font-size: 13px;
             color: #aaa;
-            font-weight: 400;
-            margin-top: 6px;
         }
-
-        /* Блок текущей статистики */
-        .realtime-stats {
-            background: #252525;
-            border-radius: 16px;
-            padding: 18px 22px;
-            margin-bottom: 28px;
-            border: 1px solid #333;
-        }
-        .realtime-header {
-            font-size: 15px;
-            font-weight: 500;
-            color: #ddd;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .live-dot {
-            width: 10px;
-            height: 10px;
-            background: #ff4d4d;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 6px #ff4d4d;
-            animation: pulse 1.2s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1);}
-            100% { opacity: 0.6; transform: scale(1.1);}
-        }
-        .stats-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 32px;
-        }
-        .stat-item {
-            background: #1e1e1e;
+        .date-badge {
+            background: #1f1f1f;
             padding: 8px 18px;
             border-radius: 40px;
-            border: 1px solid #3a3a3a;
-        }
-        .stat-label {
-            font-size: 13px;
-            color: #aaa;
-        }
-        .stat-number {
-            font-size: 20px;
-            font-weight: 600;
-            color: white;
-            margin-left: 8px;
+            font-size: 14px;
         }
 
-        /* ГРАФИК — похоже на оригинальный скриншот, но с пиками */
-        .graph-section {
-            margin-bottom: 28px;
-            background: #202020;
-            border-radius: 20px;
-            padding: 18px 16px;
-            border: 1px solid #333;
-        }
-        .graph-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .graph-labels span {
-            white-space: nowrap;
-        }
-        .graph-svg-container {
-            width: 100%;
-            overflow-x: auto;
-        }
-        svg {
-            width: 100%;
-            min-width: 680px;
-            height: 120px;
-            background: transparent;
-        }
-        .peak-note {
-            display: flex;
-            justify-content: flex-end;
-            font-size: 12px;
-            color: #5e9eff;
-            margin-top: 12px;
+        /* Stats cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-        }
-
-        /* Кнопка подробнее */
-        .details-btn {
-            background: #2c2c2c;
-            color: #3ea6ff;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 24px;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: inherit;
-            cursor: pointer;
             margin-bottom: 32px;
-            width: fit-content;
-            transition: 0.2s;
         }
-        .details-btn:hover {
-            background: #3a3a3a;
+        .stat-card {
+            background: #1e1e1e;
+            border-radius: 20px;
+            padding: 18px 20px;
+            border: 1px solid #2c2c2c;
+        }
+        .stat-title {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .stat-sub {
+            font-size: 13px;
+            color: #2ecc71;
+            margin-top: 8px;
         }
 
-        /* нижний блок с сохранением команды */
-        .team-section {
-            border-top: 1px solid #2e2e2e;
-            padding-top: 24px;
-            margin-top: 8px;
+        /* Analytics block */
+        .analytics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 32px 0 20px 0;
+        }
+        .analytics-header h2 {
+            font-size: 20px;
+            font-weight: 500;
+        }
+        .period {
+            background: #1f1f1f;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        /* График (псевдо) */
+        .chart {
+            background: #1e1e1e;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid #2c2c2c;
+            margin-bottom: 32px;
+        }
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            height: 200px;
+            margin: 20px 0;
+        }
+        .bar {
+            flex: 1;
+            background: #3b82f6;
+            border-radius: 8px 8px 4px 4px;
+            transition: 0.2s;
+            min-width: 8px;
+        }
+        .bar-label {
+            text-align: center;
+            font-size: 11px;
+            margin-top: 12px;
+            color: #888;
+        }
+
+        /* Таблица видео */
+        .videos-section h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+        .video-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
+            background: #1e1e1e;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: 8px;
+            border: 1px solid #2c2c2c;
         }
-        .save-team {
-            background: #2c2c2c;
-            color: #e5e5e5;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-size: 14px;
+        .video-title {
             font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            cursor: default;
         }
-        .invite-text {
-            font-size: 13px;
+        .video-stats {
             color: #aaa;
-        }
-        .footer-links {
+            font-size: 14px;
             display: flex;
             gap: 24px;
-            font-size: 13px;
-            color: #888;
-            margin-top: 20px;
-            justify-content: flex-end;
+        }
+        .views {
+            color: #2ecc71;
         }
 
-        /* адаптив */
-        @media (max-width: 650px) {
-            .analytics-card {
-                padding: 18px;
-            }
-            .stats-value {
-                font-size: 22px;
-            }
-            .stat-number {
-                font-size: 16px;
-            }
-        }
         hr {
-            border-color: #2a2a2a;
-            margin: 10px 0;
+            border-color: #2c2c2c;
+            margin: 20px 0;
         }
-        .fake-link {
-            cursor: default;
-            text-decoration: none;
-        }
-        .trend-up {
-            color: #3ea6ff;
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #555;
+            margin-top: 32px;
         }
     </style>
 </head>
 <body>
-<div class="analytics-card">
-    <!-- Заголовок с каналом -->
-    <div class="channel-title">
-        Аналитика по каналу — <span>DIDik</span>
-    </div>
-
-    <!-- Вкладки -->
-    <div class="tabs">
-        <div class="tab active">Обзор</div>
-        <div class="tab">Контент</div>
-        <div class="tab">Аудитория</div>
-        <div class="tab">Тренды</div>
-    </div>
-
-    <!-- Баннер за 28 дней (исправленный, позитивный) -->
-    <div class="result-banner">
-        <div class="result-title">
-            🔥 За последние 28 дней ваши видео посмотрели <strong>56 280 раз</strong> 
-            <span class="green-check">✅ +22%</span>
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fab fa-youtube"></i> <span>YouTube Studio</span>
+        </div>
+        <div class="nav-item active">
+            <i class="fas fa-chart-line"></i> <span>Аналитика</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-video"></i> <span>Контент</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-comment-dots"></i> <span>Комментарии</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-dollar-sign"></i> <span>Монетизация</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-cog"></i> <span>Настройки</span>
         </div>
     </div>
 
-    <!-- Таблица просмотров / часы / подписчики -->
-    <div class="stats-table">
-        <div class="stats-row stats-header">
-            <div>Просмотр</div>
-            <div>Время просмотра (часы)</div>
-            <div>Подписчик</div>
+    <div class="main">
+        <div class="top-bar">
+            <div class="channel-badge">
+                <div class="avatar">D</div>
+                <div class="channel-info">
+                    <h3>DID</h3>
+                    <p>@DIDik228</p>
+                </div>
+            </div>
+            <div class="date-badge">
+                <i class="far fa-calendar-alt"></i> За 28 дней
+            </div>
         </div>
-        <div class="stats-row stats-value">
-            <div>56,3 тыс.</div>
-            <div>4 120 <span class="stats-sub">часов</span></div>
-            <div>+247 <span class="stats-sub">новых</span></div>
-        </div>
-    </div>
 
-    <!-- Текущая статистика в реальном времени -->
-    <div class="realtime-stats">
-        <div class="realtime-header">
-            <span class="live-dot"></span> Текущая статистика <span style="font-weight: normal; font-size: 13px;">• в реальном времени</span>
-        </div>
         <div class="stats-grid">
-            <div class="stat-item"><span class="stat-label">Просмотров сегодня</span><span class="stat-number">1 890</span></div>
-            <div class="stat-item"><span class="stat-label">Удержание (сред.)</span><span class="stat-number">41%</span></div>
-            <div class="stat-item"><span class="stat-label">Новые комменты</span><span class="stat-number">87</span></div>
-            <div class="stat-item"><span class="stat-label">Лайки (28д)</span><span class="stat-number">3.2k</span></div>
+            <div class="stat-card">
+                <div class="stat-title">Подписчики</div>
+                <div class="stat-value">23 000</div>
+                <div class="stat-sub"><i class="fas fa-arrow-up"></i> +1.2% за 28 дн.</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Видео</div>
+                <div class="stat-value">84</div>
+                <div class="stat-sub">Всего за всё время</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Просмотры (за 28 дней)</div>
+                <div class="stat-value">56 479</div>
+                <div class="stat-sub"><i class="fas fa-chart-simple"></i> +8.3%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Время просмотра</div>
+                <div class="stat-value">2 340 ч</div>
+                <div class="stat-sub">за последние 28 дн.</div>
+            </div>
         </div>
-    </div>
 
-    <!-- ГРАФИК — полностью повторяет стиль твоего скриншота, но с реальными пиками (56к за месяц, отражено на линии) -->
-    <div class="graph-section">
-        <div class="graph-labels">
-            <span>9 мар 2025</span> <span>14 мар</span> <span>18 мар</span> <span>23 мар</span> <span>27 мар</span> <span>1 апр 2026</span> <span>5 апр</span> <span>Сейчас</span>
+        <div class="analytics-header">
+            <h2><i class="fas fa-eye"></i> Основная аналитика</h2>
+            <div class="period"><i class="far fa-clock"></i> Последние 28 дней</div>
         </div>
-        <div class="graph-svg-container">
-            <svg viewBox="0 0 760 90" preserveAspectRatio="none" style="width:100%; height:90px;">
-                <!-- Ось фона -->
-                <line x1="15" y1="70" x2="745" y2="70" stroke="#3a3a3a" stroke-width="1.2" stroke-dasharray="4 3"/>
-                <!-- Линия просмотров (динамика взлетов, соответствующих 56к просмотров за период) -->
-                <polyline points="25,68 115,62 210,48 310,32 400,45 500,18 605,12 710,15" 
-                          stroke="#3ea6ff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                <!-- Пиковые маркеры -->
-                <circle cx="210" cy="48" r="4" fill="#3ea6ff" stroke="#1e1e1e" stroke-width="1.5"/>
-                <circle cx="310" cy="32" r="4" fill="#3ea6ff" stroke="#1e1e1e" stroke-width="1.5"/>
-                <circle cx="500" cy="18" r="5" fill="#3ea6ff" stroke="#fff" stroke-width="1"/>
-                <circle cx="605" cy="12" r="4.5" fill="#3ea6ff" stroke="#1e1e1e" stroke-width="1"/>
-            </svg>
-        </div>
-        <div class="peak-note">
-            <span>📈 2,1 тыс. (14 мар)</span>
-            <span>⚡ 5,9 тыс. (18 мар)</span>
-            <span>🔥 8,4 тыс. (пик вайпа, 5 апр)</span>
-        </div>
-    </div>
 
-    <!-- Кнопка "Подробнее" -->
-    <div class="details-btn">
-        Подробнее →
-    </div>
-
-    <!-- Блок с сохранением команды (как на скрине) -->
-    <div class="team-section">
-        <div class="save-team">
-            💾 [Сохранить свою команду]
+        <!-- Псевдографик просмотров -->
+        <div class="chart">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span><i class="fas fa-chart-line"></i> Просмотры по дням</span>
+                <span style="color:#2ecc71;">▲ +11%</span>
+            </div>
+            <div class="chart-bars">
+                <div style="flex:1; display:flex; flex-direction:column;">
+                    <div class="bar" style="height: 80px;"></div><div class="bar-label">1 нед</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column;">
+                    <div class="bar" style="height: 112px;"></div><div class="bar-label">2 нед</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column;">
+                    <div class="bar" style="height: 95px;"></div><div class="bar-label">3 нед</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column;">
+                    <div class="bar" style="height: 140px;"></div><div class="bar-label">4 нед</div>
+                </div>
+            </div>
+            <div style="font-size:13px; margin-top: 12px; color:#aaa; text-align:center;">
+                🔥 Пик: 6 210 просмотров (вчера)
+            </div>
         </div>
-        <div class="invite-text">
-            ✨ Теперь вы можете продвигать других пользователей, чтобы они приняли участие в управлении вашими каналами.
+
+        <div class="videos-section">
+            <h3><i class="fas fa-list-ul"></i> Недавние видео</h3>
+            <div class="video-row">
+                <div class="video-title">DID РАЗНОСИТ СТРИМЕРА 🔥</div>
+                <div class="video-stats"><span class="views">14 230 просмотров</span> • 2 дня назад</div>
+            </div>
+            <div class="video-row">
+                <div class="video-title">КАК СНЯТЬ 100К ЗА НЕДЕЛЮ? (ОТВЕТ)</div>
+                <div class="video-stats"><span class="views">8 942 просмотра</span> • 5 дней назад</div>
+            </div>
+            <div class="video-row">
+                <div class="video-title">ОБЗОР НА МЕМ КОИН</div>
+                <div class="video-stats"><span class="views">6 550 просмотров</span> • 1 неделю назад</div>
+            </div>
+            <div class="video-row">
+                <div class="video-title">DIDik228 ОТВЕЧАЕТ НА ХЕЙТ</div>
+                <div class="video-stats"><span class="views">4 877 просмотров</span> • 2 недели назад</div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="footer-note">
+            YouTube Studio • @DIDik228 • 23 тыс. подписчиков • 84 видео • 56 479 просмотров за 28 дней
         </div>
     </div>
-
-    <!-- Футер: Настройки / Отправить отзыв -->
-    <div class="footer-links">
-        <span>⚙️ Настройки</span>
-        <span>📩 Отправить отзыв</span>
-    </div>
-</div>
 </body>
 </html>
